@@ -1,4 +1,4 @@
-import { existsAuth } from '../modules/auth'
+import { getClient, getUid, getAccessToken, existsAuth } from '../modules/auth'
 
 export const fetchUser = params => dispatch => {
   dispatch(requestFetchUser())
@@ -9,7 +9,6 @@ export const fetchUser = params => dispatch => {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-    // mode: 'cors',
     body: body
   }
   fetch(`http://localhost:3000/auth/sign_in`, options).then(
@@ -20,18 +19,41 @@ export const fetchUser = params => dispatch => {
     data => { dispatch(signIn(data)) }
   ).catch(
     error => {
-      console.log('Fetch Error')
-      console.log(error.message)
       dispatch(failedSignIn(error.message))
     }
   )
 }
 
-export const checkAuth = () => {
-  return existsAuth() ? fetchingUser() : failFetchingUser()
+export const checkAuth = () => dispatch => {
+  if (existsAuth()) {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'client': getClient(),
+        'uid': getUid(),
+        'access-token': getAccessToken()
+      }
+    }
+    fetch(`http://localhost:3000/api/v1/user`, options).then(
+      res => {
+        return res.json()
+      }
+    ).then(
+      data => { dispatch(fetchingUser(data)) }
+    ).catch(
+      error => {
+        console.log(error.message)
+        failFetchingUser()
+      }
+    )
+  } else {
+    failFetchingUser()
+  }
 }
 
-export const clickSignOut = () => {
+export const signOut = () => {
   localStorage.removeItem('uid')
   localStorage.removeItem('client')
   localStorage.removeItem('access-token')
@@ -41,7 +63,6 @@ export const clickSignOut = () => {
 }
 
 const handleResponse = response => {
-  console.log('HandleError')
   if (!response.ok) {
     return response.json().then(
       error => { throw Error(error.errors) }
@@ -52,8 +73,6 @@ const handleResponse = response => {
 }
 
 const prepareSignIn = response => {
-  console.log('PrepareSignIn')
-  console.log(response.headers.get('client'))
   localStorage.setItem('uid', response.headers.get('uid'))
   localStorage.setItem('client', response.headers.get('client'))
   localStorage.setItem('access-token', response.headers.get('access-token'))
@@ -74,8 +93,9 @@ const failedSignIn = message => ({
   message
 })
 
-const fetchingUser = () => ({
-  type: 'FETCHING_USER'
+const fetchingUser = user => ({
+  type: 'FETCHING_USER',
+  user
 })
 
 const failFetchingUser = () => ({

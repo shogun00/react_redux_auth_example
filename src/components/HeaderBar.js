@@ -1,15 +1,21 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import AppBar from 'react-toolbox/lib/app_bar'
 import Navigation from 'react-toolbox/lib/navigation'
-import { Button } from 'react-toolbox/lib/button';
-// import Link from 'react-toolbox/lib/link'
+import { Link } from 'react-router-dom'
 
-const HeaderBar = ({ auth, onClick }) => (
+const HeaderBar = ({ auth }) => (
   <AppBar title='Auth Demo'>
     <Navigation type='horizontal'>
-      { auth.isLoggedIn && <Button label='Sign out' onClick={onClick}/>}
+      { auth.isLoggedIn && <Link to='/sign_out'>Sign out</Link>}
     </Navigation>
   </AppBar>
 )
 
-export default HeaderBar
+const mapStateToProps = state => ({
+  auth: state.auth.auth
+})
+
+export default connect(
+  mapStateToProps
+)(HeaderBar)

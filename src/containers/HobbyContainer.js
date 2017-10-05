@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
 import * as hobbyActions from '../actions/hobby'
 
 class HobbyContainer extends React.Component {
@@ -18,6 +19,7 @@ class HobbyContainer extends React.Component {
             <li>{hobby.name}</li>
           </ul>
         ))}
+        <Link to='/'>Back</Link>
       </div>
     )
   }

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 import App from './App'
+import Root from './Root'
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const middleware = [thunk]
@@ -15,7 +16,7 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Root />
   </Provider>,
   document.getElementById('app')
 )

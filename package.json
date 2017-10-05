@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --colors --config webpack.config.js",
+    "start": "webpack-dev-server --colors --history-api-fallback --config webpack.config.js",
     "build": "webpack",
     "watch": "webpack -w"
   },

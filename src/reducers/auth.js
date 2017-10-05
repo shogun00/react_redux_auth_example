@@ -38,7 +38,6 @@ const auth = (state = initialState, action) => {
         }
       })
     case 'FAILED_SIGN_IN':
-      console.log(action.errors)
       return Object.assign({}, state, {
         auth: {
           isFetching: false,
@@ -50,11 +49,11 @@ const auth = (state = initialState, action) => {
         auth: {
           isPrepared: true,
           isLoggedIn: true,
-          // user: {
-          //   id: data.id,
-          //   name: data.name,
-          //   email: data.email
-          // },
+          user: {
+            id: action.user.id,
+            name: action.user.name,
+            email: action.user.email
+          },
           isFetching: false,
           error: undefined
         }
