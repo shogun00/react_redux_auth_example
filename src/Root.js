@@ -9,23 +9,21 @@ import HobbyContainer from './containers/HobbyContainer'
 import Signout from './components/Signout'
 
 const Root = () => (
-  <BrowserRouter>
-    <App>
-      <div>
-        <HeaderBar />
-        <Switch>
-          <Route exact path='/sign_in' component={SigninContainer}/>
-          <AuthContainer>
-            <Switch>
-              <Route exact path='/' component={HomeContainer}/>
-              <Route exact path='/hobbies' component={HobbyContainer} />
-              <Route exact path='/sign_out' component={Signout} />
-            </Switch>
-          </AuthContainer>
-        </Switch>
-      </div>
-    </App>
-  </BrowserRouter>
+  <App>
+    <div>
+      <HeaderBar />
+      <Switch>
+        <Route exact path='/sign_in' component={SigninContainer}/>
+        <AuthContainer>
+          <Switch>
+            <Route exact path='/' component={HomeContainer}/>
+            <Route exact path='/hobbies' component={HobbyContainer} />
+            <Route exact path='/sign_out' component={Signout} />
+          </Switch>
+        </AuthContainer>
+      </Switch>
+    </div>
+  </App>
 )
 
 export default Root
